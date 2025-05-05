@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "rc", // The main command
+	Use:   "rc",
 	Short: "A CLI tool for creating React projects",
 }
 
@@ -20,5 +20,5 @@ func Execute() {
 }
 
 func init() {
-	
+
 }
