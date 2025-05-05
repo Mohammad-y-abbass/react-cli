@@ -7,6 +7,11 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	useTs       bool
+	useTailwind bool
+)
+
 var newCmd = &cobra.Command{
 	Use:   "new [name]",
 	Short: "Create a new React app",
@@ -26,14 +31,22 @@ var newCmd = &cobra.Command{
 }
 
 func execViteCmd(appName string) error {
-	viteCmd := exec.Command("npm", "create", "vite@latest", appName, "--", "--template", "react")
 
+	var viteCmd *exec.Cmd
+
+	if useTs {
+		viteCmd = exec.Command("npm", "create", "vite@latest", appName, "--", "--template", "react-ts")
+	} else {
+		viteCmd = exec.Command("npm", "create", "vite@latest", appName, "--", "--template", "react")
+	}
 	viteCmd.Stdout = os.Stdout
 	viteCmd.Stderr = os.Stderr
 
 	return viteCmd.Run()
 }
 
-func initReactApp() {
+func init() {
 	rootCmd.AddCommand(newCmd)
+
+	newCmd.Flags().BoolVarP(&useTs, "ts", "t", false, "Use TypeScript")
 }
