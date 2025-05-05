@@ -31,8 +31,22 @@ var newCmd = &cobra.Command{
 
 		if useTailwind {
 			addTailwindConfig(appName, data)
-
 		}
+
+		var appFilePath string
+		appCssPath := filepath.Join(appName, "src", "App.css")
+
+		if useTs {
+			appFilePath = filepath.Join(appName, "src", "App.tsx")
+		} else {
+			appFilePath = filepath.Join(appName, "src", "App.jsx")
+		}
+
+		os.Remove(appCssPath)
+
+		appCodeTmpl := filepath.Join("templates", "app.tpl")
+
+		helpers.ApplyTemplate(appCodeTmpl, appFilePath, data)
 
 		if err != nil {
 			println("Error creating app:", err.Error())
@@ -58,7 +72,7 @@ func execViteCmd(appName string) error {
 	return viteCmd.Run()
 }
 
-func addTailwindConfig(appName string, data types.TemplateData) error {
+func addTailwindConfig(appName string, data types.TemplateData) {
 
 	var viteConfigPath string
 
@@ -68,12 +82,13 @@ func addTailwindConfig(appName string, data types.TemplateData) error {
 		viteConfigPath = filepath.Join(appName, "vite.config.js")
 	}
 
+	indexCssPath := filepath.Join(appName, "src", "index.css")
+
+	os.WriteFile(indexCssPath, []byte(`@import "tailwindcss";`), 0644)
+
 	viteConfigTmpl := filepath.Join("templates", "vite-config.tpl")
 
 	helpers.ApplyTemplate(viteConfigTmpl, viteConfigPath, data)
-
-	return nil
-
 }
 
 func init() {
