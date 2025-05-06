@@ -5,9 +5,11 @@ import (
 	"path/filepath"
 
 	"github.com/Mohammad-y-abbass/react-cli/types"
+	"github.com/pterm/pterm"
 )
 
 func ConfigTailwind(appName string, data types.TemplateData, useTs bool) {
+	pterm.Println(pterm.FgYellow.Sprint("Setting up tailwind css..."))
 
 	var viteConfigPath string
 
@@ -24,5 +26,7 @@ func ConfigTailwind(appName string, data types.TemplateData, useTs bool) {
 	viteConfigTmpl := filepath.Join("templates", "vite-config.tpl")
 
 	ApplyTemplate(viteConfigTmpl, viteConfigPath, data)
+
+	pterm.FgGreen.Println("✔️  Done")
 
 }

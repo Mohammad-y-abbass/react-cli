@@ -1,11 +1,15 @@
 package helpers
 
 import (
+	"io"
 	"os"
 	"os/exec"
+
+	"github.com/pterm/pterm"
 )
 
 func ExecViteCmd(appName string, useTs bool) {
+	pterm.Println(pterm.FgYellow.Sprint("Setting up project..."))
 
 	var viteCmd *exec.Cmd
 
@@ -14,8 +18,9 @@ func ExecViteCmd(appName string, useTs bool) {
 	} else {
 		viteCmd = exec.Command("npm", "create", "vite@latest", appName, "--", "--template", "react")
 	}
-	viteCmd.Stdout = os.Stdout
+	viteCmd.Stdout = io.Discard
 	viteCmd.Stderr = os.Stderr
 
 	viteCmd.Run()
+	pterm.FgGreen.Println("✔️  Done")
 }

@@ -24,8 +24,6 @@ func ApplyTemplate(fileTmpl string, filePath string, data types.TemplateData) {
 	err = os.WriteFile(filePath, buffer.Bytes(), 0644)
 	if err != nil {
 		fmt.Println("Error writing file:", err)
-	} else {
-		fmt.Printf("File %s created successfully\n", filePath)
 	}
 
 }
