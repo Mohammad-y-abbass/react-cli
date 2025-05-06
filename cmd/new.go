@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -54,6 +55,20 @@ var newCmd = &cobra.Command{
 
 		}
 
+		var npmCmd *exec.Cmd
+		if useTailwind {
+			npmCmd = exec.Command("npm", "install", "tailwindcss", "@tailwindcss/vite")
+		} else {
+			npmCmd = exec.Command("npm", "install")
+		}
+		npmCmd.Dir = appName
+		npmCmd.Stdout = os.Stdout
+		npmCmd.Stderr = os.Stderr
+
+		if err := npmCmd.Run(); err != nil {
+			fmt.Println("Error running npm install:", err)
+			os.Exit(1)
+		}
 	},
 }
 
@@ -89,6 +104,7 @@ func addTailwindConfig(appName string, data types.TemplateData) {
 	viteConfigTmpl := filepath.Join("templates", "vite-config.tpl")
 
 	helpers.ApplyTemplate(viteConfigTmpl, viteConfigPath, data)
+
 }
 
 func init() {
