@@ -4,12 +4,10 @@ import (
 	"io"
 	"os"
 	"os/exec"
-
-	"github.com/pterm/pterm"
 )
 
 func ExecViteCmd(appName string, useTs bool) {
-	pterm.Println(pterm.FgYellow.Sprint("Setting up project..."))
+	GlobalLogger.Info("Setting up project...")
 
 	var viteCmd *exec.Cmd
 
@@ -22,5 +20,5 @@ func ExecViteCmd(appName string, useTs bool) {
 	viteCmd.Stderr = os.Stderr
 
 	viteCmd.Run()
-	pterm.FgGreen.Println("✔️  Done")
+	GlobalLogger.Success("✔️  Done")
 }

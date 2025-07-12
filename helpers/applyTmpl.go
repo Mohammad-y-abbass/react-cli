@@ -2,7 +2,6 @@ package helpers
 
 import (
 	"bytes"
-	"fmt"
 	"os"
 	"text/template"
 
@@ -12,18 +11,18 @@ import (
 func ApplyTemplate(fileTmpl string, filePath string, data types.TemplateData) {
 	tmpl, err := template.ParseFiles(fileTmpl)
 	if err != nil {
-		fmt.Println("Error parsing template:", err)
+		GlobalLogger.Error("Error parsing template: " + err.Error())
 	}
 
 	var buffer bytes.Buffer
 	err = tmpl.Execute(&buffer, data)
 	if err != nil {
-		fmt.Println("Error executing template:", err)
+		GlobalLogger.Error("Error executing template: " + err.Error())
 	}
 
 	err = os.WriteFile(filePath, buffer.Bytes(), 0644)
 	if err != nil {
-		fmt.Println("Error writing file:", err)
+		GlobalLogger.Error("Error writing file: " + err.Error())
 	}
 
 }

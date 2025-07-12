@@ -1,16 +1,13 @@
 package helpers
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
-
-	"github.com/pterm/pterm"
 )
 
 func InstallDeps(appName string, useTailwind bool) {
 
-	pterm.Println(pterm.FgYellow.Sprint("Installing dependencies..."))
+	GlobalLogger.Info("Installing dependencies...")
 
 	var npmCmd *exec.Cmd
 	if useTailwind {
@@ -23,9 +20,9 @@ func InstallDeps(appName string, useTailwind bool) {
 	npmCmd.Stderr = os.Stderr
 
 	if err := npmCmd.Run(); err != nil {
-		fmt.Println("Error running npm install:", err)
+		GlobalLogger.Error("Error running npm install: " + err.Error())
 		os.Exit(1)
 	}
 
-	pterm.FgGreen.Println("✔️  Done")
+	GlobalLogger.Success("✔️  Done")
 }
